@@ -1,2 +1,0 @@
-# valorantblog
-valorantblog

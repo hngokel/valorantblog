@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hoşgeldiniz</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #fff6fb 0%, #ffe6f0 100%);
+    overflow: hidden;
+    color: #333;
+    transition: background-color 0.4s, color 0.4s;
+  }
+
+  #portal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffdef0 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+
+  .door {
+    position: relative;
+    width: 560px;    /* 280 * 2 */
+    height: 840px;   /* 420 * 2 */
+    background: #ffe6f0;
+    border-radius: 80px 80px 60px 60px; /* büyütüldü */
+    box-shadow:
+      inset 0 4px 15px rgba(255, 255, 255, 0.8),
+      0 0 25px rgba(255, 182, 193, 0.7);
+    overflow: visible;
+    transform-origin: left center;
+    cursor: pointer;
+    transition: opacity 1s ease;
+  }
+
+  .door::before {
+    content: "";
+    position: absolute;
+    top: 140px;     /* 70 * 2 */
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 320px;   /* 160 * 2 */
+    height: 400px;  /* 200 * 2 */
+    background: #fff0f5;
+    border-radius: 60px 60px 40px 40px; /* büyütüldü */
+    box-shadow:
+      inset 0 2px 8px rgba(255, 255, 255, 0.8),
+      0 0 15px rgba(255, 182, 193, 0.4);
+    filter: drop-shadow(0 3px 6px rgba(255, 182, 193, 0.6));
+  }
+
+  .door-handle {
+    position: absolute;
+    right: 50px;    /* 25 * 2 */
+    top: 380px;     /* 190 * 2 */
+    width: 36px;    /* 18 * 2 */
+    height: 100px;  /* 50 * 2 */
+    background: linear-gradient(90deg, #ffbad2 0%, #ff81a8 100%);
+    border-radius: 20px; /* 10 * 2 */
+    box-shadow: 0 2px 4px rgba(255, 105, 180, 0.8);
+  }
+
+  #portal.open .door {
+    animation: doorOpen 2.5s forwards;
+  }
+
+  #portal.leave {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+  }
+
+  @keyframes doorOpen {
+    0% {
+      transform: rotateY(0deg);
+      opacity: 1;
+    }
+    70% {
+      transform: rotateY(-85deg);
+      opacity: 1;
+    }
+    100% {
+      transform: rotateY(-85deg);
+      opacity: 0;
+    }
+  }
+
+  .wrapper {
+    background: white;
+    max-width: 700px;
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(233, 30, 99, 0.15);
+    padding: 40px 50px;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 100px auto;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  .wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-image: url('pp.png');
+    background-size: cover;
+    background-position: center;
+    margin: 0 auto 25px auto;
+    background-color: black;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  }
+
+  h1 {
+    color: #e91e63;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  a.button {
+    color: white;
+    background-color: #e91e63;
+    padding: 14px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
+    margin-top: 60px;
+  }
+
+  a.button:hover {
+    background-color: #c2185b;
+    box-shadow: 0 0 15px #ff80ab;
+  }
+
+  /* Süs görselleri */
+  .decoration {
+    position: fixed;
+    top: 10%;
+    width: 120px;
+    opacity: 0.25;
+    z-index: 0;
+  }
+
+  .decoration.left {
+    left: 0;
+  }
+
+  .decoration.right {
+    right: 0;
+  }
+
+  /* Sosyal medya ikonları */
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 10px;
+  }
+
+  .social-icons a {
+    text-decoration: none;
+  }
+
+  .social-icons a i {
+    font-size: 2.5rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+
+  .social-icons a:hover i {
+    transform: scale(1.2);
+  }
+
+  /* Dark mode styles */
+  body.dark-mode {
+    background: #1a1a1a;
+    color: #eee;
+  }
+
+  body.dark-mode #portal {
+    background: linear-gradient(135deg, #330025 0%, #66003a 100%);
+  }
+
+  body.dark-mode .door {
+    background: #66003a;
+    box-shadow:
+      inset 0 4px 15px rgba(255, 255, 255, 0.2),
+      0 0 25px rgba(255, 50, 100, 0.7);
+  }
+
+  body.dark-mode .door::before {
+    background: #66003a;
+    box-shadow:
+      inset 0 2px 8px rgba(255, 255, 255, 0.2),
+      0 0 15px rgba(255, 50, 100, 0.4);
+    filter: drop-shadow(0 3px 6px rgba(255, 50, 100, 0.6));
+  }
+
+  body.dark-mode .door-handle {
+    background: linear-gradient(90deg, #ff80ab 0%, #ff4d89 100%);
+    box-shadow: 0 2px 4px rgba(255, 80, 120, 0.8);
+  }
+
+  body.dark-mode .wrapper {
+    background: #2c2c2c;
+    box-shadow: 0 8px 30px rgba(255, 105, 150, 0.15);
+    color: #f48fb1;
+  }
+
+  body.dark-mode h1 {
+    color: #ff80ab;
+  }
+
+  body.dark-mode a.button {
+    background-color: #ff80ab;
+  }
+
+  body.dark-mode a.button:hover {
+    background-color: #c2185b;
+  }
+
+  /* Toggle button */
+  #toggleTheme {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: #e91e63;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    z-index: 11000;
+  }
+
+  #toggleTheme:hover {
+    background: #c2185b;
+  }
+
+</style>
+
+<!-- Font Awesome CDN (ikonlar için) -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  crossorigin="anonymous"
+/>
+
+</head>
+<body>
+  <img src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png" class="decoration left" alt="süs" />
+  <img src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png" class="decoration right" alt="süs" />
+
+  <!-- Gece/Gündüz modu butonu -->
+  <button id="toggleTheme" aria-label="Gece gündüz modunu değiştir">🌙</button>
+
+  <div id="portal" role="dialog" aria-modal="true" aria-label="Hoşgeldiniz Kapısı">
+    <div class="door" tabindex="0" aria-describedby="portal-desc" title="Kapı animasyonunu başlatmak için tıklayın">
+      <div class="door-handle"></div>
+    </div>
+  </div>
+
+  <div class="wrapper" id="mainContent">
+    <div class="profile-pic"></div>
+    <h1>Hakkımda</h1>
+    <p>
+      Merhaba! Ben Hatice Nüveyba Gökel.
+
+21 yaşındayım, sosyal medyada içerik üretiyorum… Evet, klasik giriş böyle olur genelde ama buradan sonrası biraz daha karışık :)
+
+
+Kahvemi soğutmadan içemem, ama projelerimi hep son dakikaya bırakırım.  Sosyal medyada hem eğlenip hem düşündürmeyi seviyorum. Arada bir “ben bu işi çözdüm!” diyip 5 dakika sonra her şeye yeniden başlıyorum.  Gündelik hayatım biraz Jett gibi: hızlı, plansız ama eğlenceli. Boş zamanlarımda ajan seçmekte bile kararsız kalan ama oyuna girince “takımı taşıyacağım” özgüvenine bürünen bir oyuncuyum. Bu blog da aslında hem oyuna, hem oyunculara, hem de “bu ne ya neden herkes Sage main?” diyenlere bir dijital uğrak yeri olsun diye var. Burada oyun analizleri, karakter muhabbetleri, kendi çapımda taktikler, bolca espri ve biraz da “Ace’imi çaldınız ama canınız sağ olsun” içerikleri bulabilirsin.  Valorant bu blogun kalbi ama sadece skor tablosu değil, arka planda neler oluyor, hangi ajan aslında hangimiz, neden hep en yanlış zamanda spike’ı bırakıyoruz gibi varoluşsal sorulara da eğiliyorum :)
+
+Yani burası hem oyun muhabbeti, hem kendi halimde, hem de “birileri okur belki” diye iç dökme köşem. (˶˃ ᵕ ˂˶)ki bu bile başlı başına bir başarı ◕⩊◕ arayı fazla soğutmadan blogda görüşürüz!
+    </p>
+    <div class="social-icons" aria-label="Sosyal medya bağlantıları">
+      <a href="https://instagram.com/hatice_nuveyba" target="_blank" aria-label="Instagram" rel="noopener noreferrer">
+        <i class="fab fa-instagram" style="color:#E4405F;"></i>
+      </a>
+      <a href="https://github.com/hngokel" target="_blank" aria-label="GitHub" rel="noopener noreferrer">
+        <i class="fab fa-github" style="color:#171515;"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/haticenuveybagokel/" target="_blank" aria-label="LinkedIn" rel="noopener noreferrer">
+        <i class="fab fa-linkedin" style="color:#0A66C2;"></i>
+      </a>
+    </div>
+
+    <a href="blog.html" class="button">Devam Et</a>
+  </div>
+
+  <script>
+    const portal = document.getElementById('portal');
+    const door = portal.querySelector('.door');
+    const content = document.getElementById('mainContent');
+    const toggleBtn = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    door.addEventListener('click', () => {
+      portal.classList.add('open');
+      setTimeout(() => {
+        portal.classList.add('leave');
+        content.classList.add('visible');
+      }, 2400);
+    });
+
+    // Kapı için klavye erişilebilirliği (Enter ve Space tuşları)
+    door.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        door.click();
+      }
+    });
+
+    // Dark mode toggle
+    toggleBtn.addEventListener('click', () => {
+      if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        toggleBtn.textContent = '🌙';
+      } else {
+        body.classList.add('dark-mode');
+        toggleBtn.textContent = '☀️';
+      }
+    });
+  </script>
+</body>
+</html>
