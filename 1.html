@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>En Çok Tercih Edilen 5 Ajan</title>
+  <style>
+    :root {
+      --bg-light: #ffe4ec;
+      --bg-dark: #121212;
+      --card-light: white;
+      --card-dark: #1e1e1e;
+      --text-light: #000;
+      --text-dark: #f0f0f0;
+      --accent: #e91e63;
+      --accent-dark: #c2185b;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    header {
+      background-color: var(--accent);
+      color: white;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .mode-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .mode-toggle button {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      border: none;
+      background-color: white;
+      color: var(--accent);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      display: none;
+      position: absolute;
+      width: 90%;
+      max-width: 1000px;
+      background: var(--card-light);
+      color: inherit;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      padding: 30px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out, background 0.4s ease;
+    }
+
+    body.dark .slide {
+      background: var(--card-dark);
+    }
+
+    .slide.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .slide-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .slide h2 {
+      margin: 0;
+      font-size: 2.2rem;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .slide img {
+      width: 800px; /* %80 boyutta */
+      max-width: 90vw;
+      height: auto;
+      display: block;
+      margin: 10px auto 0 auto;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .info {
+      text-align: center;
+      max-width: 700px;
+      margin-top: 15px;
+    }
+
+    .info p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .info .tip {
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #777;
+      margin-top: 12px;
+    }
+
+    .controls {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .controls button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      padding: 10px 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 0 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .controls button:hover {
+      background: var(--accent-dark);
+    }
+
+    .home-link-container {
+      margin-top: 20px; /* 5px daha aşağı için */
+      text-align: center;
+    }
+
+    .home-link {
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      font-weight: bold;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+
+    .home-link:hover {
+      background-color: var(--accent);
+      color: white;
+      text-decoration: none;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .slide-content img {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>En Popüler Ajanlar</h1>
+    <p>Jett, Sage, Reyna... Hepsi sırayla karşınızda!</p>
+    <div class="mode-toggle">
+      <button onclick="toggleMode()">🌞 / 🌙</button>
+    </div>
+  </header>
+
+  <div class="slider-container">
+
+    <div class="slide active">
+      <div class="slide-content">
+        <h2>#1 Jett – Bıçakların Hanımı</h2>
+        <img src="jett.gif" alt="Jett">
+        <div class="info">
+          <p>Jett, çevikliği ve çevresini şaşırtan hamleleriyle Valorant'ın en ölümcül düellocularından biridir.</p>
+          <p>Düşmanlarının arasına yıldırım gibi dalar, sonra da sisle ortadan kaybolur.</p>
+          <p>Yeteneği olan “Updraft” ile yükseğe zıplayabilir, “Tailwind” ile ani yön değiştirir.</p>
+          <p>Ultisi “Blade Storm” ile bıçak fırtınası estirerek birebir savaşların galibi olur.</p>
+          <p class="tip">💡 Tüyo: Bıçaklar tam isabet ederken düşmana yakın oynamaktan çekinme!</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="changeSlide(-1)">◀</button>
+        <button onclick="changeSlide(1)">▶</button>
+
+        <div class="home-link-container">
+          <a href="blog.html" class="home-link">ANASAYFA</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-content">
+        <h2>#2 Reyna – İmparatoriçe</h2>
+        <img src="reyna.gif" alt="Reyna">
+        <div class="info">
+          <p>Reyna, rakiplerini yıpratmak için yüksek hasar veren yetenekleriyle öne çıkar.</p>
+          <p>“Devour” ile hızlıca canını yenileyebilir, “Dismiss” ile görünmez olur.</p>
+          <p>Yalnızca öldürdüğü düşmanlardan güç alır, bu yüzden agresif ve başarılı olmalıdır.</p>
+          <p class="tip">💡 Tüyo: Ölümden sonra bile savaşmaya devam etmek için rakipleri hızlıca temizle!</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="changeSlide(-1)">◀</button>
+        <button onclick="changeSlide(1)">▶</button>
+
+        <div class="home-link-container">
+          <a href="blog.html" class="home-link">ANASAYFA</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-content">
+        <h2>#3 Sova – Ok Adam</h2>
+        <img src="sova.gif" alt="Sova">
+        <div class="info">
+          <p>Sova, rakiplerin yerini tespit etmek için benzersiz izleme yeteneklerine sahiptir.</p>
+          <p>“Recon Bolt” ile alanı tarar, “Owl Drone” ile düşmanları keşfeder.</p>
+          <p>Stratejik oynanışla takımına büyük avantaj sağlar.</p>
+          <p class="tip">💡 Tüyo: Haritada görüş sağlamak ve tuzak kurmak için yeteneklerini akıllıca kullan!</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="changeSlide(-1)">◀</button>
+        <button onclick="changeSlide(1)">▶</button>
+
+        <div class="home-link-container">
+          <a href="blog.html" class="home-link">ANASAYFA</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-content">
+        <h2>#4 Killjoy – Yıkılmaz Kale</h2>
+        <img src="killjoy.gif" alt="Killjoy">
+        <div class="info">
+          <p>Killjoy, savunmada etkili tuzaklar ve otomatik savunma sistemleri kurar.</p>
+          <p>“Alarmbot” ile düşmanları yavaşlatır, “Nanoswarm” ile alan kontrolü sağlar.</p>
+          <p>Rakiplerin girişini engellemekte üstündür.</p>
+          <p class="tip">💡 Tüyo: Tuzaklarını stratejik noktalara yerleştirerek takımını koru!</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="changeSlide(-1)">◀</button>
+        <button onclick="changeSlide(1)">▶</button>
+
+        <div class="home-link-container">
+          <a href="blog.html" class="home-link">ANASAYFA</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="slide-content">
+        <h2>#5 Sage – Yürüyen Ambulans</h2>
+        <img src="sage.gif" alt="Sage">
+        <div class="info">
+          <p>Sage, takımın cankurtaranı ve savunma ustasıdır.</p>
+          <p>“Healing Orb” ile takım arkadaşlarını iyileştirir, “Barrier Orb” ile engeller oluşturur.</p>
+          <p>Ultisi “Resurrection” ile düşmüş bir dostu hayata döndürür.</p>
+          <p class="tip">💡 Tüyo: Takımını hayatta tut, pozisyonunu iyi seç ve zamanlamanı iyi yap!</p>
+        </div>
+      </div>
+      <div class="controls">
+        <button onclick="changeSlide(-1)">◀</button>
+        <button onclick="changeSlide(1)">▶</button>
+
+        <div class="home-link-container">
+          <a href="blog.html" class="home-link">ANASAYFA</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        slide.style.opacity = '0';
+        slide.style.zIndex = i === index ? '1' : '0';
+      });
+      slides[index].classList.add('active');
+      slides[index].style.opacity = '1';
+      currentSlide = index;
+    }
+
+    function changeSlide(direction) {
+      const nextIndex = (currentSlide + direction + slides.length) % slides.length;
+      showSlide(nextIndex);
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+    }
+
+    // Başlangıç slaytı
+    showSlide(currentSlide);
+  </script>
+
+</body>
+</html>
